@@ -1,0 +1,83 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Stagiaires</h1>
+      <p class="page-sub">{{ filteredStagiaires.length }} stagiaire(s)</p>
+    </div>
+  </div>
+
+  <div class="filters-bar">
+    <div class="search-wrap">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Rechercher un stagiaire..." [(ngModel)]="search" (input)="filter()">
+    </div>
+    <select [(ngModel)]="statutFilter" (change)="filter()">
+      <option value="">Tous les statuts</option>
+      <option value="EN_COURS">En cours</option>
+      <option value="TERMINE">Terminé</option>
+      <!-- ✅ Correction : SUSPENDU retiré du filtre mais gardé dans le modèle -->
+      <option value="ABANDON">Abandon</option>
+    </select>
+  </div>
+
+  <div class="loading" *ngIf="loading"><div class="spinner"></div></div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table>
+      <thead>
+      <tr>
+        <th>Stagiaire</th><th>Filière</th><th>Sujet</th><th>Encadrant</th>
+        <th>Progression</th><th>Rapport</th><th>Statut</th><th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let s of filteredStagiaires">
+        <td>
+          <div class="candidate-cell">
+            <div class="candidate-av">{{ s.prenom.charAt(0) }}{{ s.nom.charAt(0) }}</div>
+            <div>
+              <span class="candidate-name">{{ s.prenom }} {{ s.nom }}</span>
+              <span class="candidate-email">{{ s.email }}</span>
+            </div>
+          </div>
+        </td>
+        <td><span class="filiere-badge">{{ s.filiere }}</span></td>
+        <!-- ✅ sujetStage, encadrantNom, rapportDepose ajoutés dans models.ts -->
+        <td><span class="sujet-name">{{ s.sujetStage }}</span></td>
+        <td><span class="encadrant-name">{{ s.encadrantNom || '—' }}</span></td>
+        <td>
+          <div class="prog-wrap">
+            <div class="prog-bar-bg">
+              <div class="prog-bar-fill" [ngClass]="progressionClass(s.progression)" [style.width.%]="s.progression ?? 0"></div>
+            </div>
+            <span class="prog-val">{{ s.progression ?? 0 }}%</span>
+          </div>
+        </td>
+        <td>
+            <span class="rapport-badge" [class.deposited]="s.rapportDepose" [class.missing]="!s.rapportDepose">
+              {{ s.rapportDepose ? '✓ Déposé' : '✗ Non déposé' }}
+            </span>
+        </td>
+        <td>
+            <span class="statut-badge"
+                  [class.en-cours]="s.statut==='EN_COURS'"
+                  [class.termine]="s.statut==='TERMINE'"
+                  [class.suspendu]="s.statut==='SUSPENDU'">
+              {{ s.statut === 'EN_COURS' ? 'En cours' : s.statut === 'TERMINE' ? 'Terminé' : s.statut }}
+            </span>
+        </td>
+        <td>
+          <div class="actions-cell">
+            <a [routerLink]="['/app/stagiaires', s.id]" class="action-btn view" title="Voir détail">👁</a>
+            <a [routerLink]="['/app/evaluations']" class="action-btn eval" title="Évaluation">⭐</a>
+            <button class="action-btn attest" title="Attestation" (click)="genererAttestation(s)" *ngIf="s.statut==='TERMINE'">📜</button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="filteredStagiaires.length === 0">
+        <td colspan="8" class="empty-row">Aucun stagiaire trouvé</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

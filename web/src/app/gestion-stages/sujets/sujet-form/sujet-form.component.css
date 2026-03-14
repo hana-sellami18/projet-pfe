@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans',sans-serif;}
+.page{padding:24px 26px 50px;display:flex;flex-direction:column;gap:16px;animation:fadeIn .35s ease both;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;}
+.page-title{font-size:22px;font-weight:900;color:#1a1a2e;letter-spacing:-.3px;}
+.page-sub{font-size:12.5px;color:#999;margin-top:3px;}
+.btn-back{display:inline-flex;align-items:center;gap:6px;background:#f5f6f8;border:1.5px solid #e8eaed;color:#555;font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:10px;text-decoration:none;transition:background .15s;}
+.btn-back:hover{background:#ebebeb;}
+.loading{display:flex;justify-content:center;padding:60px;}
+.spinner{width:36px;height:36px;border:3px solid #f0f0f0;border-top-color:#f57c00;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.form-card{background:#fff;border:1px solid #e8eaed;border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.05);}
+.error-msg{background:#FEF2F2;border:1px solid #FECACA;color:#DC2626;font-size:12.5px;font-weight:600;padding:10px 14px;border-radius:10px;margin-bottom:16px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.form-group{display:flex;flex-direction:column;gap:7px;}
+.form-group.full{grid-column:1/-1;}
+.form-group label{font-size:12.5px;font-weight:700;color:#333;}
+.form-group input,.form-group textarea,.form-group select{background:#F6F7F9;border:1.5px solid #E8EAED;border-radius:10px;padding:10px 14px;font-size:13px;color:#333;font-family:inherit;outline:none;transition:border-color .15s;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#f57c00;background:#fff;}
+.form-group textarea{resize:vertical;}
+.toggle-wrap{display:flex;align-items:center;gap:10px;padding:10px 0;}
+.toggle{position:relative;display:inline-block;width:44px;height:24px;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:#e0e0e0;border-radius:999px;cursor:pointer;transition:.2s;}
+.toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s;}
+.toggle input:checked + .toggle-slider{background:#FF9800;}
+.toggle input:checked + .toggle-slider::before{transform:translateX(20px);}
+.toggle-label{font-size:13px;font-weight:700;color:#333;}
+.competence-input{display:flex;gap:8px;}
+.competence-input input{flex:1;background:#F6F7F9;border:1.5px solid #E8EAED;border-radius:10px;padding:10px 14px;font-size:13px;color:#333;font-family:inherit;outline:none;}
+.competence-input input:focus{border-color:#f57c00;background:#fff;}
+.btn-add-comp{background:#FF9800;color:#fff;font-size:12.5px;font-weight:700;padding:10px 16px;border-radius:10px;cursor:pointer;white-space:nowrap;}
+.competence-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.comp-tag{display:inline-flex;align-items:center;gap:5px;background:#FFF3E0;border:1px solid #FFD0A0;color:#E65100;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;}
+.comp-tag button{background:none;border:none;color:#F57C00;cursor:pointer;font-size:13px;line-height:1;padding:0;}
+.form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid #f3f3f3;}
+.btn-cancel{display:inline-flex;align-items:center;background:#f5f6f8;border:1.5px solid #e8eaed;color:#555;font-size:12.5px;font-weight:700;padding:10px 20px;border-radius:10px;text-decoration:none;}
+.btn-submit{background:linear-gradient(135deg,#FF9800,#F57C00);color:#fff;font-size:12.5px;font-weight:800;padding:10px 24px;border-radius:10px;cursor:pointer;box-shadow:0 4px 12px rgba(245,124,0,.35);transition:transform .15s;}
+.btn-submit:hover:not(:disabled){transform:translateY(-1px);}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;}

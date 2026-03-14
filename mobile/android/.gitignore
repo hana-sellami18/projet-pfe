@@ -1,0 +1,19 @@
+# Flutter
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+
+# Android
+android/.gradle/
+android/local.properties
+android/key.properties
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+
+# Divers
+.env
+.DS_Store

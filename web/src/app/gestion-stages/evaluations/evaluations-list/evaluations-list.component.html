@@ -1,0 +1,52 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Évaluations</h1>
+      <p class="page-sub">{{ evaluations.length }} évaluation(s)</p>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading"><div class="spinner"></div></div>
+
+  <div class="eval-grid" *ngIf="!loading">
+    <div class="eval-card" *ngFor="let ev of evaluations">
+      <div class="eval-header">
+        <!-- ✅ Opérateur ?. pour stagiaireNom optionnel -->
+        <div class="eval-av">{{ ev.stagiaireNom?.charAt(0) }}</div>
+        <div class="eval-info">
+          <span class="eval-name">{{ ev.stagiaireNom }}</span>
+          <!-- ✅ encadrantNom ajouté dans le modèle -->
+          <span class="eval-encadrant">Encadrant : {{ ev.encadrantNom }}</span>
+        </div>
+        <!-- ✅ Correction : valideeRH (pas valideRH) -->
+        <div class="eval-valide" *ngIf="ev.valideeRH">
+          <span class="valide-badge">✓ Validé RH</span>
+        </div>
+      </div>
+
+      <div class="eval-note">
+        <span class="note-label">Note :</span>
+        <div class="stars">
+          <span *ngFor="let s of noteStars(ev.note)" [class.filled]="s <= ev.note">★</span>
+        </div>
+        <span class="note-num" [ngClass]="noteColor(ev.note)">{{ ev.note }}/5</span>
+      </div>
+
+      <p class="eval-commentaire">{{ ev.commentaire }}</p>
+
+      <div class="eval-date">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        {{ ev.dateEvaluation | date:'dd/MM/yyyy' }}
+      </div>
+
+      <div class="eval-actions">
+        <button class="btn-valider" (click)="validerRH(ev)" *ngIf="!ev.valideeRH">✓ Valider RH</button>
+        <button class="btn-attestation" (click)="genererAttestation(ev)" *ngIf="ev.valideeRH">📜 Générer Attestation</button>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="evaluations.length === 0">
+      <p>Aucune évaluation disponible</p>
+    </div>
+  </div>
+</div>

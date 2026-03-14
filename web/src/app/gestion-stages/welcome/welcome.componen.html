@@ -1,0 +1,420 @@
+<!-- welcome.html – Enhanced Angular Template -->
+<div class="wl-root">
+
+  <!-- ══ TOPBAR ══ -->
+  <header class="wl-topbar">
+    <div class="wl-topbar-title">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F57C00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      Stage<span>Hub</span>
+    </div>
+
+    <div class="wl-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" placeholder="Rechercher une offre, candidat…">
+    </div>
+
+    <div class="wl-topbar-right">
+      <!-- Notification btn -->
+      <div class="wl-topbar-btn" (click)="toggleNotif()" style="position:relative">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="wl-notif-dot"></span>
+
+        <!-- Dropdown -->
+        <div class="wl-notif-panel" *ngIf="showNotif" (click)="$event.stopPropagation()">
+          <div class="wl-notif-header">
+            <h4>🔔 Notifications</h4>
+            <span class="wl-notif-count">3 nouvelles</span>
+          </div>
+
+          <div class="wl-notif-item">
+            <div class="wl-notif-ico orange">📋</div>
+            <div class="wl-notif-body">
+              <strong>Nouvelle candidature reçue</strong>
+              <span>Sarah Mahdi — Java/Spring · il y a 5 min</span>
+              <span class="wl-notif-badge">À planifier</span>
+            </div>
+          </div>
+          <div class="wl-notif-item">
+            <div class="wl-notif-ico green">📅</div>
+            <div class="wl-notif-body">
+              <strong>Entretien demain — 25 Avril à 10:00</strong>
+              <span>25 Avril · Confirmé</span>
+            </div>
+          </div>
+          <div class="wl-notif-item">
+            <div class="wl-notif-ico blue">⏳</div>
+            <div class="wl-notif-body">
+              <strong>3 Stages finissant bientôt</strong>
+              <span>Action requise</span>
+            </div>
+          </div>
+
+          <div class="wl-notif-footer">Voir toutes les notifications →</div>
+        </div>
+      </div>
+
+      <!-- User pill -->
+      <div class="wl-user-pill">
+        <div class="wl-user-av">{{ userName.charAt(0) }}</div>
+        <span class="wl-user-name">{{ userName }}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ MAIN CONTENT ══ -->
+  <main class="wl-content">
+
+    <!-- ── HERO ── -->
+    <section class="wl-hero">
+      <div class="wl-hero-left">
+        <span class="wl-hero-label">{{ greetingLabel }}</span>
+        <h1 class="wl-hero-title">
+          {{ greetingMessage }},&nbsp;<span class="wl-hero-name">{{ userName }}</span> 👋
+        </h1>
+        <p class="wl-hero-sub">
+          Voici un aperçu de votre tableau de bord de recrutement.<br>
+          Gérez vos offres, candidatures et entretiens en un coup d'œil.
+        </p>
+        <div class="wl-hero-meta">
+          <span class="wl-meta-chip">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            {{ currentTime }}
+          </span>
+          <span class="wl-meta-chip">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            {{ today }}
+          </span>
+        </div>
+        <div class="wl-hero-btns">
+          <button class="wl-btn-primary" (click)="openForm.emit()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nouvelle Offre
+          </button>
+          <button class="wl-btn-outline" (click)="goDashboard.emit()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Tableau de bord
+          </button>
+        </div>
+      </div>
+
+      <div class="wl-hero-score">
+        <div class="wl-score-ring">
+          <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="9"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#FF9800" stroke-width="9"
+                    stroke-dasharray="263.9" stroke-dashoffset="79" stroke-linecap="round"
+                    transform="rotate(-90 50 50)"/>
+          </svg>
+          <div class="wl-score-inner">
+            <span class="wl-score-val">{{ totalOffres }}</span>
+            <span class="wl-score-unit">+</span>
+          </div>
+        </div>
+        <span class="wl-score-label">Offres Total</span>
+        <span class="wl-score-sub">{{ disponiblesCount }} disponibles</span>
+      </div>
+    </section>
+
+    <!-- ── KPI CARDS ── -->
+    <div class="wl-kpi-row">
+      <!-- Candidatures en attente -->
+      <div class="wl-kpi orange">
+        <div class="wl-kpi-head">
+          <span class="wl-kpi-label">En Attente</span>
+          <div class="wl-kpi-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+        </div>
+        <div class="wl-kpi-value">{{ candidaturesCount > 0 ? (candidaturesCount - disponiblesCount - 5 | number) : 12 }}</div>
+        <div class="wl-kpi-compare">Candidatures en attente</div>
+        <div class="wl-kpi-trend">↑ +3 cette semaine</div>
+      </div>
+
+      <!-- Acceptées -->
+      <div class="wl-kpi green">
+        <div class="wl-kpi-head">
+          <span class="wl-kpi-label">Acceptées</span>
+          <div class="wl-kpi-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <div class="wl-kpi-value">{{ disponiblesCount > 0 ? disponiblesCount : 8 }}</div>
+        <div class="wl-kpi-compare">Candidatures acceptées</div>
+        <div class="wl-kpi-trend">↑ +2 ce mois</div>
+      </div>
+
+      <!-- Refusées -->
+      <div class="wl-kpi red">
+        <div class="wl-kpi-head">
+          <span class="wl-kpi-label">Refusées</span>
+          <div class="wl-kpi-icon">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </div>
+        </div>
+        <div class="wl-kpi-value">5</div>
+        <div class="wl-kpi-compare">Candidatures refusées</div>
+        <div class="wl-kpi-trend">↓ -1 ce mois</div>
+      </div>
+
+      <!-- Offres actives -->
+      <div class="wl-kpi blue">
+        <div class="wl-kpi-head">
+          <span class="wl-kpi-label">Offres Actives</span>
+          <div class="wl-kpi-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+        </div>
+        <div class="wl-kpi-value">{{ totalOffres > 0 ? totalOffres : 7 }}</div>
+        <div class="wl-kpi-compare">Offres de stage actives</div>
+        <div class="wl-kpi-trend">= Stable</div>
+      </div>
+    </div>
+
+    <!-- ── CHARTS ROW ── -->
+    <div class="wl-charts-row">
+
+      <!-- Bar chart -->
+      <div class="wl-card">
+        <div class="wl-card-head">
+          <div class="wl-card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            Candidatures par Mois
+          </div>
+          <button class="wl-card-action" (click)="goList.emit()">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            Voir tout
+          </button>
+        </div>
+        <div class="wl-chart-wrap">
+          <div class="wl-chart-bars">
+            <div class="wl-bar-col" *ngFor="let b of barData">
+              <span class="wl-bar-val">{{ b.val }}</span>
+              <div class="wl-bar-bg" [class.active]="b.active" [style.height.%]="b.pct"></div>
+              <span class="wl-bar-label">{{ b.label }}</span>
+            </div>
+          </div>
+          <div class="wl-chart-legend">
+            <span><div class="wl-legend-dot orange"></div> Ce mois</span>
+            <span><div class="wl-legend-dot gray"></div> Précédent</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Donut chart -->
+      <div class="wl-card">
+        <div class="wl-card-head">
+          <div class="wl-card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>
+            </svg>
+            Répartition par Filière
+          </div>
+        </div>
+        <div class="wl-donut-section">
+          <div class="wl-donut-wrap">
+            <svg viewBox="0 0 100 100">
+              <!-- Licence 40% -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#FF9800" stroke-width="22"
+                      stroke-dasharray="95.5 143.3" stroke-dashoffset="0" transform="rotate(-90 50 50)"/>
+              <!-- Master 30% -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#3b82f6" stroke-width="22"
+                      stroke-dasharray="71.6 167.2" stroke-dashoffset="-95.5" transform="rotate(-90 50 50)"/>
+              <!-- Cycle Ingé 20% -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#1A1A2E" stroke-width="22"
+                      stroke-dasharray="47.8 191" stroke-dashoffset="-167.1" transform="rotate(-90 50 50)"/>
+              <!-- Autres 10% -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#E0E0E0" stroke-width="22"
+                      stroke-dasharray="23.9 215" stroke-dashoffset="-214.9" transform="rotate(-90 50 50)"/>
+              <circle cx="50" cy="50" r="28" fill="white"/>
+            </svg>
+            <div class="wl-donut-center">
+              <span>{{ candidaturesCount > 0 ? candidaturesCount : 25 }}</span>
+              <small>Total</small>
+            </div>
+          </div>
+          <div class="wl-donut-legend-list">
+            <div class="wl-donut-legend-item">
+              <div class="wl-donut-legend-color" style="background:#FF9800"></div>
+              <span class="wl-donut-legend-label">Licence</span>
+              <span class="wl-donut-legend-val">40%</span>
+            </div>
+            <div class="wl-donut-legend-item">
+              <div class="wl-donut-legend-color" style="background:#3b82f6"></div>
+              <span class="wl-donut-legend-label">Master</span>
+              <span class="wl-donut-legend-val">30%</span>
+            </div>
+            <div class="wl-donut-legend-item">
+              <div class="wl-donut-legend-color" style="background:#1A1A2E"></div>
+              <span class="wl-donut-legend-label">Cycle Ingé.</span>
+              <span class="wl-donut-legend-val">20%</span>
+            </div>
+            <div class="wl-donut-legend-item">
+              <div class="wl-donut-legend-color" style="background:#E0E0E0"></div>
+              <span class="wl-donut-legend-label">Autres</span>
+              <span class="wl-donut-legend-val">10%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PIPELINE TRACKING ── -->
+    <div class="wl-tracking-section">
+      <div class="wl-tracking-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        Suivi des Candidatures
+      </div>
+
+      <!-- Progress bar -->
+      <div class="wl-tracking-bar">
+        <div class="wl-tracking-seg" style="width:20%; background:#FF9800"></div>
+        <div class="wl-tracking-seg" style="width:30%; background:#3b82f6"></div>
+        <div class="wl-tracking-seg" style="width:18%; background:#1A1A2E"></div>
+        <div class="wl-tracking-seg" style="width:12%; background:#22c55e"></div>
+        <div class="wl-tracking-seg" style="width:8%;  background:#ef4444"></div>
+        <div class="wl-tracking-seg" style="width:12%; background:#E0E0E0"></div>
+      </div>
+
+      <div class="wl-tracking-steps">
+        <div class="wl-tracking-step">
+          <div class="wl-step-dot done">✓</div>
+          <span class="wl-step-count">{{ candidaturesCount > 0 ? candidaturesCount : 25 }}</span>
+          <span class="wl-step-label">Dépôt<small>Aujourd'hui</small></span>
+        </div>
+        <div class="wl-tracking-connector"></div>
+        <div class="wl-tracking-step">
+          <div class="wl-step-dot active">⚙</div>
+          <span class="wl-step-count">18</span>
+          <span class="wl-step-label">Analyse IA<small>En attente IA</small></span>
+        </div>
+        <div class="wl-tracking-connector"></div>
+        <div class="wl-tracking-step">
+          <div class="wl-step-dot">💬</div>
+          <span class="wl-step-count">10</span>
+          <span class="wl-step-label">Entretien<small>En attente</small></span>
+        </div>
+        <div class="wl-tracking-connector"></div>
+        <div class="wl-tracking-step">
+          <div class="wl-step-dot done">✓</div>
+          <span class="wl-step-count">{{ disponiblesCount > 0 ? disponiblesCount : 8 }}</span>
+          <span class="wl-step-label">Acceptées<small class="green-text">8 Acceptées</small></span>
+        </div>
+        <div class="wl-tracking-connector"></div>
+        <div class="wl-tracking-step">
+          <div class="wl-step-dot reject">✕</div>
+          <span class="wl-step-count">5</span>
+          <span class="wl-step-label">Refusées<small class="red-text">5 Refusés</small></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BOTTOM ROW ── -->
+    <div class="wl-bottom">
+
+      <!-- Activity feed -->
+      <div class="wl-card">
+        <div class="wl-card-head">
+          <div class="wl-card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            Activité Récente
+          </div>
+          <button class="wl-card-action" (click)="goList.emit()">Voir tout</button>
+        </div>
+
+        <div class="wl-act-list">
+          <ng-container *ngIf="recentActivity.length > 0; else emptyAct">
+            <div class="wl-act-item" *ngFor="let a of recentActivity; let i = index" [style.animation-delay]="(i * 0.07) + 's'">
+              <div class="wl-act-dot" [class]="a.color">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <ng-container [ngSwitch]="a.type">
+                    <ng-container *ngSwitchCase="'new'">
+                      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'open'">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'candidature'">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </ng-container>
+                  </ng-container>
+                </svg>
+              </div>
+              <div class="wl-act-info">
+                <span class="wl-act-text">{{ a.text }}</span>
+                <span class="wl-act-time">{{ a.time }}</span>
+              </div>
+              <svg class="wl-act-arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </ng-container>
+          <ng-template #emptyAct>
+            <div class="wl-empty">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#DDD" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <p>Aucune activité récente</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="wl-card">
+        <div class="wl-card-head">
+          <div class="wl-card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+            </svg>
+            Actions Rapides
+          </div>
+        </div>
+        <div class="wl-qa-grid">
+          <button class="wl-qa-item wl-qa-orange" (click)="openForm.emit()">
+            <div class="wl-qa-ico">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
+            <span class="wl-qa-lbl">Créer Offre</span>
+            <span class="wl-qa-sub">Publier</span>
+          </button>
+          <button class="wl-qa-item wl-qa-blue" (click)="goList.emit()">
+            <div class="wl-qa-ico">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            </div>
+            <span class="wl-qa-lbl">Candidats</span>
+            <span class="wl-qa-sub">Voir liste</span>
+          </button>
+          <button class="wl-qa-item wl-qa-green">
+            <div class="wl-qa-ico">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <span class="wl-qa-lbl">Entretiens</span>
+            <span class="wl-qa-sub">Planifier</span>
+          </button>
+          <button class="wl-qa-item wl-qa-gray" (click)="goDashboard.emit()">
+            <div class="wl-qa-ico">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <span class="wl-qa-lbl">Rapports</span>
+            <span class="wl-qa-sub">Statistiques</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="wl-footer">StageHub © 2025 · Tableau de bord RH</div>
+  </main>
+</div>

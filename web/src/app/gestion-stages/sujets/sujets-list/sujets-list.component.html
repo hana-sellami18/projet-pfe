@@ -1,0 +1,93 @@
+<div class="page">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Sujets de Stage</h1>
+      <p class="page-sub">{{ filteredSujets.length || 0 }} sujet(s) trouvé(s)</p>
+    </div>
+    <a routerLink="/app/sujets/nouveau" class="btn-primary">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nouveau Sujet
+    </a>
+  </div>
+
+  <div class="filters-bar">
+    <div class="search-wrap">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Rechercher un sujet..." [(ngModel)]="search" (input)="filter()">
+    </div>
+    <select [(ngModel)]="filiereFilter" (change)="filter()">
+      <option value="">Toutes les filières</option>
+      <option value="LICENCE">Licence</option>
+      <option value="MASTER">Master</option>
+      <option value="CYCLE_INGE">Cycle Ingé.</option>
+      <option value="AUTRE">Autre</option>
+    </select>
+    <select [(ngModel)]="statutFilter" (change)="filter()">
+      <option value="">Tous les statuts</option>
+      <option value="true">Disponible</option>
+      <option value="false">Fermé</option>
+    </select>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Chargement...</p>
+  </div>
+
+  <div class="cards-grid" *ngIf="!loading">
+    <div class="sujet-card" *ngFor="let s of filteredSujets">
+      <div class="sujet-card-top">
+        <div class="sujet-filiere-badge" [ngClass]="s.filiere.toLowerCase()">{{ filiereLabel(s.filiere) }}</div>
+        <span class="sujet-statut" [class.open]="s.estDisponible" [class.closed]="!s.estDisponible">
+          {{ s.estDisponible ? 'Disponible' : 'Fermé' }}
+        </span>
+      </div>
+
+      <h3 class="sujet-titre">{{ s.titre }}</h3>
+      <p class="sujet-desc">{{ s.description }}</p>
+
+      <div class="sujet-competences" *ngIf="s.competences && s.competences.length > 0">
+        <span class="competence-tag" *ngFor="let c of s.competences.slice(0,3)">{{ c }}</span>
+        <span class="competence-more" *ngIf="s.competences.length > 3">
+          +{{ s.competences.length - 3 }}
+        </span>
+      </div>
+
+      <div class="sujet-footer">
+        <div class="sujet-popularity">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f57c00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          <span>{{ s.nbCandidatures || 0 }} candidature(s)</span>
+        </div>
+        <div class="sujet-actions">
+          <a [routerLink]="['/app/sujets', s.id, 'modifier']" class="btn-edit">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Modifier
+          </a>
+          <button class="btn-delete" (click)="confirmDelete(s.id)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="filteredSujets.length === 0">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <p>Aucun sujet trouvé</p>
+      <a routerLink="/app/sujets/nouveau" class="btn-primary" style="margin-top:12px">Créer un sujet</a>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="deleteId">
+    <div class="modal">
+      <h3>Confirmer la suppression</h3>
+      <p>Êtes-vous sûr de vouloir supprimer ce sujet ? Cette action est irréversible.</p>
+      <div class="modal-btns">
+        <button class="btn-cancel" (click)="cancelDelete()">Annuler</button>
+        <button class="btn-confirm-delete" (click)="doDelete()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+</div>

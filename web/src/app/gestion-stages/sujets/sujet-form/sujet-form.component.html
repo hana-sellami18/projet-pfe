@@ -1,0 +1,72 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">{{ isEdit ? 'Modifier le Sujet' : 'Nouveau Sujet de Stage' }}</h1>
+      <p class="page-sub">{{ isEdit ? 'Modifiez les informations du sujet' : 'Remplissez le formulaire pour créer un nouveau sujet' }}</p>
+    </div>
+    <a routerLink="/app/sujets" class="btn-back">← Retour</a>
+  </div>
+
+  <div class="loading" *ngIf="loading"><div class="spinner"></div></div>
+
+  <div class="form-card" *ngIf="!loading">
+    <div class="error-msg" *ngIf="error">⚠️ {{ error }}</div>
+
+    <div class="form-grid">
+      <!-- Titre -->
+      <div class="form-group full">
+        <label>Titre du sujet *</label>
+        <input type="text" [(ngModel)]="model.titre" placeholder="Ex: Développement d'une application web avec Angular">
+      </div>
+
+      <!-- Description -->
+      <div class="form-group full">
+        <label>Description</label>
+        <textarea [(ngModel)]="model.description" rows="4" placeholder="Décrivez le sujet, les objectifs, le contexte..."></textarea>
+      </div>
+
+      <!-- Filière -->
+      <div class="form-group">
+        <label>Filière</label>
+        <select [(ngModel)]="model.filiere">
+          <option *ngFor="let f of filieres" [value]="f">{{ filiereLabel(f) }}</option>
+        </select>
+      </div>
+
+      <!-- Statut -->
+      <div class="form-group">
+        <label>Statut</label>
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="model.estDisponible">
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label">{{ model.estDisponible ? 'Disponible' : 'Fermé' }}</span>
+        </div>
+      </div>
+
+      <!-- Compétences -->
+      <div class="form-group full">
+        <label>Compétences requises</label>
+        <div class="competence-input">
+          <input type="text" [(ngModel)]="newCompetence" placeholder="Ajouter une compétence..." (keyup.enter)="addCompetence()">
+          <button type="button" class="btn-add-comp" (click)="addCompetence()">Ajouter</button>
+        </div>
+        <div class="competence-list" *ngIf="model.competences!.length > 0">
+          <span class="comp-tag" *ngFor="let c of model.competences">
+            {{ c }}
+            <button (click)="removeCompetence(c)">×</button>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/app/sujets" class="btn-cancel">Annuler</a>
+      <button class="btn-submit" (click)="submit()" [disabled]="saving">
+        <span *ngIf="saving">Enregistrement...</span>
+        <span *ngIf="!saving">{{ isEdit ? 'Modifier' : 'Créer le sujet' }}</span>
+      </button>
+    </div>
+  </div>
+</div>

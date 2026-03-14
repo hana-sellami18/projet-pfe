@@ -1,0 +1,106 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Candidatures</h1>
+      <p class="page-sub">{{ filteredCandidatures.length }} candidature(s)</p>
+    </div>
+  </div>
+
+  <div class="filters-bar">
+    <div class="search-wrap">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Rechercher un candidat..." [(ngModel)]="search" (input)="filter()">
+    </div>
+    <select [(ngModel)]="statutFilter" (change)="filter()">
+      <option value="">Tous les statuts</option>
+      <option value="EN_ATTENTE">En attente</option>
+      <option value="ACCEPTEE">Acceptées</option>
+      <option value="REFUSEE">Refusées</option>
+    </select>
+  </div>
+
+  <div class="loading" *ngIf="loading"><div class="spinner"></div></div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table>
+      <thead>
+      <tr>
+        <th>Candidat</th><th>Sujet choisi</th><th>Filière</th>
+        <th>Score IA</th><th>Date dépôt</th><th>Statut</th><th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let c of filteredCandidatures">
+        <td>
+          <div class="candidate-cell">
+            <!-- ✅ Correction : opérateur ?. pour éviter "possibly undefined" -->
+            <div class="candidate-av">{{ c.prenomCandidat?.charAt(0) }}{{ c.nomCandidat?.charAt(0) }}</div>
+            <div>
+              <span class="candidate-name">{{ c.prenomCandidat }} {{ c.nomCandidat }}</span>
+              <span class="candidate-email">{{ c.email }}</span>
+            </div>
+          </div>
+        </td>
+        <td><span class="sujet-name">{{ c.offreTitre }}</span></td>
+        <td><span class="filiere-badge">{{ c.filiere }}</span></td>
+        <td>
+          <div class="score-wrap">
+            <div class="score-bar-bg">
+              <!-- ✅ scoreIA passé avec fallback 0 -->
+              <div class="score-bar-fill" [ngClass]="scoreClass(c.scoreIA)" [style.width.%]="c.scoreIA ?? 0"></div>
+            </div>
+            <span class="score-val" [ngClass]="scoreClass(c.scoreIA)">{{ c.scoreIA ?? 0 }}%</span>
+          </div>
+        </td>
+        <td><span class="date-text">{{ c.dateDepot | date:'dd/MM/yyyy' }}</span></td>
+        <td>
+          <span class="statut-badge" [ngClass]="statutClass(c.statut)">{{ statutLabel(c.statut) }}</span>
+        </td>
+        <td>
+          <div class="actions-cell">
+            <a [routerLink]="['/app/candidatures', c.id]" class="action-btn view" title="Voir CV">👁</a>
+            <button class="action-btn ia" title="Compétences IA" (click)="voirIA(c)">🧠</button>
+            <button class="action-btn plan" title="Entretien" (click)="ouvrirEntretien(c.id)">📅</button>
+            <button class="action-btn accept" title="Accepter" (click)="accepter(c)" *ngIf="c.statut==='EN_ATTENTE'">✅</button>
+            <button class="action-btn reject" title="Refuser"  (click)="refuser(c)"  *ngIf="c.statut==='EN_ATTENTE'">❌</button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="filteredCandidatures.length === 0">
+        <td colspan="7" class="empty-row">Aucune candidature trouvée</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal entretien -->
+  <div class="modal-overlay" *ngIf="entretienId">
+    <div class="modal">
+      <h3>📅 Programmer un entretien</h3>
+      <p>Sélectionnez la date et l'heure de l'entretien</p>
+      <input type="datetime-local" [(ngModel)]="dateEntretien" style="margin-top:14px;">
+      <div class="modal-btns">
+        <button class="btn-cancel" (click)="entretienId=null">Annuler</button>
+        <button class="btn-submit" (click)="confirmerEntretien()">Confirmer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal IA -->
+  <div class="modal-overlay" *ngIf="showIAModal">
+    <div class="modal">
+      <h3>🧠 Compétences extraites par IA</h3>
+      <!-- ✅ Correction : accès direct car showIAModal est Candidature (non null ici) -->
+      <p>{{ showIAModal.prenomCandidat }} {{ showIAModal.nomCandidat }}</p>
+      <div class="ia-competences">
+        <span class="comp-tag" *ngFor="let c of showIAModal.competencesIA">{{ c }}</span>
+        <p *ngIf="!showIAModal.competencesIA?.length" style="color:#bbb;font-size:12px;margin-top:10px;">
+          Aucune compétence extraite
+        </p>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-submit" (click)="showIAModal=null">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
